@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-
 public class PatientService {
 
     @Autowired
@@ -19,6 +18,9 @@ public class PatientService {
 
     // Ajouter un patient
     public Patient createPatient(Patient patient) {
+        if (patient == null) {
+            throw new IllegalArgumentException("Patient must not be null");
+        }
         return patientRepository.save(patient);
     }
 

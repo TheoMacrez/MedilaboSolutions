@@ -1,0 +1,25 @@
+
+logging:
+  level:
+    org:
+      springframework: INFO
+
+spring:
+  application:
+    name: medilabo-patient
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/medilabo_patient?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: rootroot
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    jpa:
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+
+
+
