@@ -42,11 +42,11 @@ hs_err_pid*
 /.settings/
 
 # Variables d'environnement et fichiers sensibles
-.env
-application.properties
-application.yml
-application-*.yml
-secrets.env
+#.env
+#application.properties
+#application.yml
+#application-*.yml
+#secrets.env
 
 # Fichiers Docker ignorés (si tu utilises Docker)
 docker-compose.override.yml
