@@ -14,7 +14,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/patients")
-@CrossOrigin(origins = "*")  // Permettre l'accès aux autres microservices
 public class PatientController {
 
     @Autowired
@@ -33,7 +32,7 @@ public class PatientController {
 
     // Récupérer un patient par ID
     @GetMapping("/{id}")
-    public ResponseEntity<Patient> getPatientById(@PathVariable Long id) {
+    public ResponseEntity<Patient> getPatientById(@PathVariable int id) {
         Patient patient = patientService.getPatientById(id);
         return ResponseEntity.ok(patient);
     }
@@ -48,14 +47,14 @@ public class PatientController {
 
     // Mettre à jour un patient
     @PutMapping("/{id}")
-    public ResponseEntity<Patient> updatePatient(@PathVariable Long id, @Valid @RequestBody Patient patientDetails) {
+    public ResponseEntity<Patient> updatePatient(@PathVariable int id, @Valid @RequestBody Patient patientDetails) {
         Patient updatedPatient = patientService.updatePatient(id, patientDetails);
         return ResponseEntity.ok(updatedPatient);
     }
 
     // Supprimer un patient
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePatient(@PathVariable int id) {
         patientService.deletePatient(id);
         return ResponseEntity.noContent().build();
     }

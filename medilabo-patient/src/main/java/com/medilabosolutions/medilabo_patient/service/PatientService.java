@@ -25,7 +25,7 @@ public class PatientService {
     }
 
     // Récupérer un patient par ID
-    public Patient getPatientById(Long id) {
+    public Patient getPatientById(int id) {
         Optional<Patient> patientOpt = patientRepository.findById(id);
         if(patientOpt.isEmpty())
         {
@@ -51,7 +51,7 @@ public class PatientService {
     }
 
     // Mettre à jour un patient
-    public Patient updatePatient(Long id, Patient patientDetailsUpdated) {
+    public Patient updatePatient(int id, Patient patientDetailsUpdated) {
 
         Patient patientToUpdate = getPatientById(id);
 
@@ -65,7 +65,7 @@ public class PatientService {
     }
 
     // Supprimer un patient
-    public void deletePatient(Long id) {
+    public void deletePatient(int id) {
         Patient patient = getPatientById(id);
 
         patientRepository.delete(patient);

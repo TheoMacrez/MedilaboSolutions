@@ -20,5 +20,13 @@ public class GlobalExceptionHandler {
         });
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
+
+    // Gestion de l'exception PatientNotFoundException
+    @ExceptionHandler(PatientNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handlePatientNotFound(PatientNotFoundException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());  // Message de l'exception
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);  // Retourne un 404 avec le message
+    }
 }
 

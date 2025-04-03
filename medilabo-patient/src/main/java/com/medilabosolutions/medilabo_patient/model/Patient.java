@@ -17,7 +17,7 @@ public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @NotBlank(message = "Le prénom est obligatoire")
     @Column(nullable = false)

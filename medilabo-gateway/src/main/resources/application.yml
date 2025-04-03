@@ -1,3 +1,36 @@
+
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+server:
+  port: 8080
+
 spring:
   application:
     name: medilabo-gateway
+
+  main:
+    web-application-type: reactive
+
+  cloud:
+    gateway:
+      routes:
+        - id: patient-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/patients/**
+          filters:
+            - StripPrefix=0
+      enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      enabled: true
+
+

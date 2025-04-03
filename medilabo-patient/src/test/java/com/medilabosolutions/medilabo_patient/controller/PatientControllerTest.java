@@ -64,7 +64,7 @@ class PatientControllerTest {
 //                .build();
 
         patient = Patient.builder()
-                .id(1L)
+                .id(1)
                 .firstName("John")
                 .lastName("Doe")
                 .dateOfBirth(LocalDate.of(1990, 1, 1))
@@ -86,7 +86,7 @@ class PatientControllerTest {
 
     @Test
     void shouldGetPatientById() throws Exception {
-        when(patientService.getPatientById(1L)).thenReturn(patient);
+        when(patientService.getPatientById(1)).thenReturn(patient);
 
         mockMvc.perform(get("/patients/1"))
                 .andExpect(status().isOk())
@@ -111,7 +111,7 @@ class PatientControllerTest {
 
     @Test
     void shouldUpdatePatient() throws Exception {
-        when(patientService.updatePatient(Mockito.eq(1L), any(Patient.class))).thenReturn(patient);
+        when(patientService.updatePatient(Mockito.eq(1), any(Patient.class))).thenReturn(patient);
 
         mockMvc.perform(put("/patients/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -130,7 +130,7 @@ class PatientControllerTest {
     void shouldFailWhenCreatingPatientWithInvalidData() throws Exception {
 
         Patient invalidPatient = Patient.builder()
-                .id(1L)
+                .id(1)
                 .firstName("")
                 .lastName("")
                 .dateOfBirth(LocalDate.now().plusDays(1))

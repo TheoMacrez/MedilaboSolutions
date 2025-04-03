@@ -34,7 +34,7 @@ class PatientServiceTest {
     @BeforeEach
     void setUp() {
         patient = Patient.builder()
-                .id(1L)
+                .id(1)
                 .firstName("John")
                 .lastName("Doe")
                 .dateOfBirth(LocalDate.of(1990, 1, 1))
@@ -57,19 +57,19 @@ class PatientServiceTest {
 
     @Test
     void shouldReturnPatientById() {
-        when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
+        when(patientRepository.findById(1)).thenReturn(Optional.of(patient));
 
-        Patient foundPatient = patientService.getPatientById(1L);
+        Patient foundPatient = patientService.getPatientById(1);
 
         assertNotNull(foundPatient);
-        assertEquals(1L, foundPatient.getId());
+        assertEquals(1, foundPatient.getId());
     }
 
     @Test
     void shouldThrowExceptionWhenPatientNotFoundById() {
-        when(patientRepository.findById(2L)).thenReturn(Optional.empty());
+        when(patientRepository.findById(2)).thenReturn(Optional.empty());
 
-        assertThrows(PatientNotFoundException.class, () -> patientService.getPatientById(2L));
+        assertThrows(PatientNotFoundException.class, () -> patientService.getPatientById(2));
     }
 
     @Test
@@ -93,10 +93,10 @@ class PatientServiceTest {
                 .phoneNumber("0987654321")
                 .build();
 
-        when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
+        when(patientRepository.findById(1)).thenReturn(Optional.of(patient));
         when(patientRepository.save(any(Patient.class))).thenReturn(updatedDetails);
 
-        Patient updatedPatient = patientService.updatePatient(1L, updatedDetails);
+        Patient updatedPatient = patientService.updatePatient(1, updatedDetails);
 
         assertNotNull(updatedPatient);
         assertEquals("Jane", updatedPatient.getFirstName());
@@ -104,10 +104,10 @@ class PatientServiceTest {
 
     @Test
     void shouldDeletePatientSuccessfully() {
-        when(patientRepository.findById(1L)).thenReturn(Optional.of(patient));
+        when(patientRepository.findById(1)).thenReturn(Optional.of(patient));
         doNothing().when(patientRepository).delete(patient);
 
-        assertDoesNotThrow(() -> patientService.deletePatient(1L));
+        assertDoesNotThrow(() -> patientService.deletePatient(1));
         verify(patientRepository, times(1)).delete(patient);
     }
 }
