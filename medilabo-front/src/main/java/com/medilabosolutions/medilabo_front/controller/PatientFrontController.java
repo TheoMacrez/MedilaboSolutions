@@ -1,7 +1,7 @@
 package com.medilabosolutions.medilabo_front.controller;
 
 import com.medilabosolutions.medilabo_front.client.PatientClient;
-import com.medilabosolutions.medilabo_gateway.dto.PatientDto;
+import com.medilabosolutions.medilabo_front.dto.PatientDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

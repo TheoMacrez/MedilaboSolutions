@@ -3,10 +3,10 @@ package com.medilabosolutions.medilabo_gateway;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.web.reactive.config.EnableWebFlux;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-@EnableFeignClients(basePackages = "com.medilabosolutions.medilabo_gateway.client")
+@EnableWebFlux
 public class MedilaboGatewayApplication {
 
 	public static void main(String[] args) {

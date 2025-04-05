@@ -1,12 +1,12 @@
 package com.medilabosolutions.medilabo_front.client;
 
-import com.medilabosolutions.medilabo_gateway.dto.PatientDto;
+import com.medilabosolutions.medilabo_front.dto.PatientDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "medilabo-gateway", url = "http://localhost:8080/api/patients")
+@FeignClient(name = "medilabo-gateway", url = "${patient.client.url}")
 public interface PatientClient {
 
     @GetMapping

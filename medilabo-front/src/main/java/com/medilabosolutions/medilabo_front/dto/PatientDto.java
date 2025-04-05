@@ -1,4 +1,4 @@
-package com.medilabosolutions.medilabo_gateway.dto;
+package com.medilabosolutions.medilabo_front.dto;
 
 import lombok.Data;
 
