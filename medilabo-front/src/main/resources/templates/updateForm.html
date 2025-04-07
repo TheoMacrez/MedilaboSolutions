@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8">
   <title>Modifier le patient</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
 <h1>Modifier le patient</h1>
@@ -31,9 +33,11 @@
 
   <label>Téléphone: <input type="text" th:field="*{phoneNumber}"/></label>
 
-  <button type="submit">Mettre à jour</button>
+  <button type="submit">Enregistrer</button>
+  <a th:href="@{/patients/profile/{id}(id=${note.patId})}">
+    <button type="button">Annuler</button>
+  </a>
 </form>
 
-<a th:href="@{/patients}">Retour à la liste</a>
 </body>
 </html>

@@ -16,10 +16,14 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: patient-service
+        - id: medilabo-patient
           uri: http://localhost:8081
           predicates:
             - Path=/patients/**
+        - id: medilabo-notes
+          uri: http://localhost:8083
+          predicates:
+            - Path=/notes/**
 
 
 management:

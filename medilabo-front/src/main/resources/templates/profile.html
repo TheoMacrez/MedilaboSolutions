@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil du Patient</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <style>
+        .container { display: flex; gap: 2rem; padding: 2rem; }
+        .column { flex: 1; padding: 1rem; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9; }
+        h2 { margin-bottom: 1rem; text-align: center; }
+        .note { background-color: #fff; margin-bottom: 1rem; padding: 1rem; border: 1px solid #ddd; border-radius: 5px; position: relative; }
+        .note-buttons { margin-top: 0.5rem; display: flex; gap: 0.5rem; }
+        .top-buttons { margin: 1rem; display: flex; gap: 1rem; }
+        button { padding: 0.5rem 1rem; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        a { text-decoration: none; }
+    </style>
+</head>
+
+<body>
+<h1>Profil du Patient</h1>
+
+<div class="top-buttons">
+    <a th:href="@{/patients}">
+        <button>Retour à la liste</button>
+    </a>
+
+    <a th:href="@{/notes/create(patId=${patient.id})}">
+        <button>Nouvelle Note</button>
+    </a>
+    <a th:href="@{/patients/edit/{id}(id=${patient.id})}">
+        <button>Modifier Patient</button>
+    </a>
+
+</div>
+
+<div class="container">
+    <!-- Colonne gauche : Infos Patient -->
+    <div class="column">
+        <h2>Informations Patient</h2>
+        <p><strong>Nom :</strong> <span th:text="${patient.lastName}"></span></p>
+        <p><strong>Prénom :</strong> <span th:text="${patient.firstName}"></span></p>
+        <p><strong>Date de naissance :</strong> <span th:text="${patient.dateOfBirth}"></span></p>
+        <p><strong>Sexe :</strong> <span th:text="${patient.gender}"></span></p>
+        <p><strong>Adresse :</strong> <span th:text="${patient.address}"></span></p>
+        <p><strong>Téléphone :</strong> <span th:text="${patient.phoneNumber}"></span></p>
+    </div>
+
+    <!-- Colonne droite : Notes médicales -->
+    <div class="column">
+        <h2>Notes Médicales</h2>
+        <div th:if="${#lists.isEmpty(notes)}">
+            <p>Aucune note disponible pour ce patient.</p>
+        </div>
+        <div th:each="note : ${notes}" class="note">
+            <p th:text="${note.content}"></p>
+            <div class="note-buttons">
+                <a th:href="@{/notes/edit(noteId=${note.id})}">
+                    <button>Modifier</button>
+                </a>
+                <a th:href="@{/notes/delete(noteId=${note.id}, patId=${patient.id})}">
+                    <button style="background-color: #dc3545;">Supprimer</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

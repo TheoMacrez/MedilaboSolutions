@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "medilabo-gateway", url = "${patient.client.url}")
+@FeignClient(name = "patient-client-gateway", url = "${patient.client.url}")
 public interface PatientClient {
 
     @GetMapping
@@ -16,10 +16,10 @@ public interface PatientClient {
     PatientDto getPatientById(@PathVariable("id") int id);
 
     @PostMapping("/create")
-    PatientDto createPatient(@RequestBody PatientDto patient);
+    void createPatient(@RequestBody PatientDto patient);
 
     @PutMapping("/{id}")
-    PatientDto updatePatient(@PathVariable("id") int id, @RequestBody PatientDto patient);
+    void updatePatient(@PathVariable("id") int id, @RequestBody PatientDto patient);
 
     @DeleteMapping("/{id}")
     void deletePatient(@PathVariable("id") int id);

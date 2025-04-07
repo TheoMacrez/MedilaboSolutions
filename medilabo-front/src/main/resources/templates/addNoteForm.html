@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter une Note</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1>Ajouter une Note</h1>
+
+<form th:action="@{/notes/create}" th:object="${note}" method="post">
+    <input type="hidden" th:field="*{patId}" />
+
+    <label for="content">Contenu de la Note :</label><br>
+    <textarea id="content" th:field="*{content}" rows="5" cols="50" required></textarea><br><br>
+
+    <button type="submit">Ajouter</button>
+    <a th:href="@{/patients/profile/{id}(id=${note.patId})}">
+        <button type="button">Annuler</button>
+    </a>
+</form>
+
+</body>
+</html>

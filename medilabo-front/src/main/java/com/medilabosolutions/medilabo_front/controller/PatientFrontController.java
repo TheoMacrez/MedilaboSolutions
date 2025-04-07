@@ -1,6 +1,8 @@
 package com.medilabosolutions.medilabo_front.controller;
 
+import com.medilabosolutions.medilabo_front.client.NoteClient;
 import com.medilabosolutions.medilabo_front.client.PatientClient;
+import com.medilabosolutions.medilabo_front.dto.NoteDto;
 import com.medilabosolutions.medilabo_front.dto.PatientDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,8 @@ import java.util.List;
 public class PatientFrontController {
 
     private final PatientClient patientClient;
+
+    private final NoteClient noteClient;
 
     @GetMapping
     public String listPatients(Model model) {
@@ -64,5 +68,17 @@ public class PatientFrontController {
         patientClient.deletePatient(id);
         return "redirect:/patients";
     }
+
+    @GetMapping("/profile/{id}")
+    public String showPatientProfile(@PathVariable int id, Model model) {
+        PatientDto patient = patientClient.getPatientById(id);
+        List<NoteDto> notes = noteClient.getNotesByPatientId(String.valueOf(id));
+
+        model.addAttribute("patient", patient);
+        model.addAttribute("notes", notes);
+
+        return "profile"; // Le nom du fichier HTML à afficher
+    }
+
 }
 

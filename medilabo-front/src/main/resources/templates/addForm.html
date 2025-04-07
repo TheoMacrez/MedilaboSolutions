@@ -2,11 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Ajouter un patient</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
 <h1>Ajouter un patient</h1>
 
-<form th:action="@{/patients/add}" th:object="${patient}" method="post">
+<form th:action="@{/patients/create}" th:object="${patient}" method="post">
     <label>Prénom: <input type="text" th:field="*{firstName}"/></label>
     <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
 
@@ -33,6 +34,6 @@
     <button type="submit">Ajouter</button>
 </form>
 
-<a th:href="@{/patients}">Retour à la liste</a>
+<a th:href="@{/patients}">Annuler</a>
 </body>
 </html>
