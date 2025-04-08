@@ -3,30 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Profil du Patient</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-
 <body>
-<h1>Profil du Patient</h1>
+<header>
+    <h1>Profil du Patient</h1>
+</header>
 
-<div class="top-buttons">
+<nav class="top-buttons">
     <a th:href="@{/patients}">
-        <button>Retour à la liste</button>
+        <button type="button">Retour à la liste</button>
     </a>
-
     <a th:href="@{/notes/create(patId=${patient.id})}">
-        <button>Nouvelle Note</button>
+        <button type="button">Nouvelle Note</button>
     </a>
     <a th:href="@{/patients/edit/{id}(id=${patient.id})}">
-        <button>Modifier Patient</button>
+        <button type="button">Modifier Patient</button>
     </a>
+</nav>
 
-</div>
-
-<div class="container">
+<main class="container">
     <!-- Colonne gauche : Infos Patient -->
-    <div class="column">
-        <h2>Informations Patient</h2>
+    <section class="column" aria-labelledby="infos-patient">
+        <h2 id="infos-patient">Informations Patient</h2>
         <p><strong>Nom :</strong> <span th:text="${patient.lastName}"></span></p>
         <p><strong>Prénom :</strong> <span th:text="${patient.firstName}"></span></p>
         <p><strong>Date de naissance :</strong> <span th:text="${patient.dateOfBirth}"></span></p>
@@ -36,11 +35,11 @@
         <p><strong>Évaluation du Risque :</strong>
             <span th:text="${assessment}" th:class="'risk-' + ${assessment}"></span>
         </p>
-    </div>
+    </section>
 
     <!-- Colonne droite : Notes médicales -->
-    <div class="column">
-        <h2>Notes Médicales</h2>
+    <section class="column" aria-labelledby="notes-medicales">
+        <h2 id="notes-medicales">Notes Médicales</h2>
         <div th:if="${#lists.isEmpty(notes)}">
             <p>Aucune note disponible pour ce patient.</p>
         </div>
@@ -48,15 +47,14 @@
             <p th:text="${note.content}"></p>
             <div class="note-buttons">
                 <a th:href="@{/notes/edit(noteId=${note.id})}">
-                    <button>Modifier</button>
+                    <button type="button">Modifier</button>
                 </a>
                 <a th:href="@{/notes/delete(noteId=${note.id}, patId=${patient.id})}">
-                    <button style="background-color: #dc3545;">Supprimer</button>
+                    <button type="button" style="background-color: #dc3545;">Supprimer</button>
                 </a>
             </div>
         </div>
-    </div>
-</div>
-
+    </section>
+</main>
 </body>
 </html>

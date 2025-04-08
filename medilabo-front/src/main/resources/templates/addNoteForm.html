@@ -11,13 +11,15 @@
 <form th:action="@{/notes/create}" th:object="${note}" method="post">
     <input type="hidden" th:field="*{patId}" />
 
-    <label for="content">Contenu de la Note :</label><br>
-    <textarea id="content" th:field="*{content}" rows="5" cols="50" required></textarea><br><br>
+    <div>
+        <label for="content">Contenu de la Note :</label><br>
+        <textarea id="content" th:field="*{content}" rows="5" cols="50" required></textarea>
+    </div>
 
-    <button type="submit">Ajouter</button>
-    <a th:href="@{/patients/profile/{id}(id=${note.patId})}">
-        <button type="button">Annuler</button>
-    </a>
+    <div>
+        <button type="submit">Ajouter</button>
+        <a th:href="@{/patients/profile/{id}(id=${note.patId})}" class="button-link">Annuler</a>
+    </div>
 </form>
 
 </body>

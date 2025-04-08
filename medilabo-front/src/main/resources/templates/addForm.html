@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
+    <meta charset="UTF-8">
     <title>Ajouter un patient</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
@@ -8,32 +9,50 @@
 <h1>Ajouter un patient</h1>
 
 <form th:action="@{/patients/create}" th:object="${patient}" method="post">
-    <label>Prénom: <input type="text" th:field="*{firstName}"/></label>
-    <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+    <div>
+        <label for="firstName">Prénom:</label>
+        <input type="text" id="firstName" th:field="*{firstName}"/>
+        <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+    </div>
 
-    <label>Nom: <input type="text" th:field="*{lastName}"/></label>
-    <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+    <div>
+        <label for="lastName">Nom:</label>
+        <input type="text" id="lastName" th:field="*{lastName}"/>
+        <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+    </div>
 
-    <label>Date de naissance: <input type="date" th:field="*{dateOfBirth}"/></label>
-    <div th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></div>
+    <div>
+        <label for="dateOfBirth">Date de naissance:</label>
+        <input type="date" id="dateOfBirth" th:field="*{dateOfBirth}"/>
+        <div th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></div>
+    </div>
 
-    <label>Genre:
-        <select th:field="*{gender}">
+    <div>
+        <label for="gender">Genre:</label>
+        <select id="gender" th:field="*{gender}">
             <option value="">-- Sélectionnez --</option>
             <option value="M">Homme</option>
             <option value="F">Femme</option>
             <option value="Other">Autre</option>
         </select>
-    </label>
-    <div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
+        <div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
+    </div>
 
-    <label>Adresse: <input type="text" th:field="*{address}"/></label>
+    <div>
+        <label for="address">Adresse:</label>
+        <input type="text" id="address" th:field="*{address}"/>
+    </div>
 
-    <label>Téléphone: <input type="text" th:field="*{phoneNumber}"/></label>
+    <div>
+        <label for="phoneNumber">Téléphone:</label>
+        <input type="text" id="phoneNumber" th:field="*{phoneNumber}"/>
+    </div>
 
-    <button type="submit">Ajouter</button>
+    <div>
+        <button type="submit">Ajouter</button>
+        <a th:href="@{/patients}" class="button-link">Annuler</a>
+    </div>
 </form>
 
-<a th:href="@{/patients}">Annuler</a>
 </body>
 </html>

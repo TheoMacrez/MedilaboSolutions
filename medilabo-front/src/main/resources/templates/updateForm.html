@@ -1,42 +1,43 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
   <meta charset="UTF-8">
   <title>Modifier le patient</title>
-  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
 <h1>Modifier le patient</h1>
 
 <form th:action="@{/patients/edit/{id}(id=${patient.id})}" th:object="${patient}" method="post">
-
-  <label>Prénom: <input type="text" th:field="*{firstName}"/></label>
+  <label for="firstName">Prénom:</label>
+  <input type="text" id="firstName" th:field="*{firstName}" />
   <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
 
-  <label>Nom: <input type="text" th:field="*{lastName}"/></label>
+  <label for="lastName">Nom:</label>
+  <input type="text" id="lastName" th:field="*{lastName}" />
   <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
 
-  <label>Date de naissance: <input type="date" th:field="*{dateOfBirth}"/></label>
+  <label for="dateOfBirth">Date de naissance:</label>
+  <input type="date" id="dateOfBirth" th:field="*{dateOfBirth}" />
   <div th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></div>
 
-  <label>Genre:
-    <select th:field="*{gender}">
-      <option value="">-- Sélectionnez --</option>
-      <option value="M">Homme</option>
-      <option value="F">Femme</option>
-      <option value="Other">Autre</option>
-    </select>
-  </label>
+  <label for="gender">Genre:</label>
+  <select id="gender" th:field="*{gender}">
+    <option value="">-- Sélectionnez --</option>
+    <option value="M">Homme</option>
+    <option value="F">Femme</option>
+    <option value="Other">Autre</option>
+  </select>
   <div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
 
-  <label>Adresse: <input type="text" th:field="*{address}"/></label>
+  <label for="address">Adresse:</label>
+  <input type="text" id="address" th:field="*{address}" />
 
-  <label>Téléphone: <input type="text" th:field="*{phoneNumber}"/></label>
+  <label for="phoneNumber">Téléphone:</label>
+  <input type="text" id="phoneNumber" th:field="*{phoneNumber}" />
 
   <button type="submit">Enregistrer</button>
-  <a th:href="@{/patients/profile/{id}(id=${patient.id})}">
-    <button type="button">Annuler</button>
-  </a>
+  <a th:href="@{/patients/profile/{id}(id=${patient.id})}">Annuler</a>
 </form>
 
 </body>

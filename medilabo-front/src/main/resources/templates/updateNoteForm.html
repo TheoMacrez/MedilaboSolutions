@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Modifier une Note</title>
-  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
 <h1>Modifier une Note</h1>
@@ -12,13 +12,12 @@
   <input type="hidden" th:field="*{id}" />
   <input type="hidden" th:field="*{patId}" />
 
-  <label for="content">Contenu de la Note :</label><br>
-  <textarea id="content" th:field="*{content}" rows="5" cols="50" required></textarea><br><br>
+  <label for="content">Contenu de la Note :</label>
+  <textarea id="content" th:field="*{content}" rows="5" cols="50" required></textarea>
+  <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
 
   <button type="submit">Enregistrer</button>
-  <a th:href="@{/patients/profile/{id}(id=${note.patId})}">
-    <button type="button">Annuler</button>
-  </a>
+  <a th:href="@{/patients/profile/{id}(id=${note.patId})}">Annuler</a>
 </form>
 
 </body>
