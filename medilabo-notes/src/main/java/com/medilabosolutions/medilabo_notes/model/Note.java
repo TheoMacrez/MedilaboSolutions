@@ -11,13 +11,13 @@ public class Note {
 
     private String patId;
 
-    private String patient;
+    private String patName;
 
     private String content;
 
-    public Note(String patId, String patient, String content) {
+    public Note(String patId, String patName, String content) {
         this.patId = patId;
-        this.patient = patient;
+        this.patName = patName;
         this.content = content;
     }
 
@@ -29,20 +29,20 @@ public class Note {
         this.id = id;
     }
 
-    public String getPatientId() {
+    public String getPatId() {
         return patId;
     }
 
-    public void setPatientId(String patientId) {
+    public void setPatId(String patientId) {
         this.patId = patientId;
     }
 
     public String getPatName() {
-        return patient;
+        return patName;
     }
 
     public void setPatName(String patName) {
-        this.patient = patName;
+        this.patName = patName;
     }
 
     public String getContent() {

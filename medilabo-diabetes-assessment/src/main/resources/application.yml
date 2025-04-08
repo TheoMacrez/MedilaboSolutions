@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: medilabo-diabetes-assessment
+
+server:
+  port: 8084
+
+patient:
+  service:
+    url: http://localhost:8081/patients
+note:
+  service:
+    url: http://localhost:8083/notes
+

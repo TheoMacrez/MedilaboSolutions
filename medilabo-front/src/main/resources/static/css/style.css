@@ -179,6 +179,26 @@ form a button:hover {
 .cancel-button:hover {
     background-color: #c82333; /* Un rouge plus foncé au survol */
 }
+.risk-None {
+    color: green;
+    font-weight: bold;
+}
+
+.risk-Borderline {
+    color: orange;
+    font-weight: bold;
+}
+
+.risk-InDanger {
+    color: darkorange;
+    font-weight: bold;
+}
+
+.risk-EarlyOnset {
+    color: red;
+    font-weight: bold;
+}
+
 
 /* For small screens, adjust layout to stack columns */
 @media (max-width: 768px) {

@@ -34,7 +34,7 @@
   <label>Téléphone: <input type="text" th:field="*{phoneNumber}"/></label>
 
   <button type="submit">Enregistrer</button>
-  <a th:href="@{/patients/profile/{id}(id=${note.patId})}">
+  <a th:href="@{/patients/profile/{id}(id=${patient.id})}">
     <button type="button">Annuler</button>
   </a>
 </form>

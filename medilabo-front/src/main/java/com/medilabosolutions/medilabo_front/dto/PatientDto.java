@@ -9,9 +9,9 @@ public class PatientDto {
     private Integer id;
     private String firstName;
     private String lastName;
-    private LocalDate dateOfBirth;  // correction ici
-    private String gender;          // Enum sous forme de String JSON
+    private LocalDate dateOfBirth;
+    private String gender;
     private String address;
-    private String phoneNumber;     // correction ici
+    private String phoneNumber;
 }
 

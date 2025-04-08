@@ -11,7 +11,7 @@ import java.util.List;
 public interface NoteClient {
 
     @GetMapping
-    List<NoteDto> getNotesByPatientId(@RequestParam("patId") String patientId);
+    List<NoteDto> getNotesByPatientId(@RequestParam("patId") String patId);
 
     @PostMapping
     void createNote(@RequestBody NoteDto note);

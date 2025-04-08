@@ -6,6 +6,6 @@ import lombok.Data;
 public class NoteDto {
     private String id;
     private String patId;
-    private String patient;
+    private String patName;
     private String content;
 }

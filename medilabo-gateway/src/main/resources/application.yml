@@ -24,6 +24,10 @@ spring:
           uri: http://localhost:8083
           predicates:
             - Path=/notes/**
+        - id: medilabo-diabetes-assessment
+          uri: http://localhost:8084
+          predicates:
+              - Path=/assessment/**
 
 
 management:

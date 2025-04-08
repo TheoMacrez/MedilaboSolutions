@@ -3,6 +3,7 @@ package com.medilabosolutions.medilabo_front.controller;
 import com.medilabosolutions.medilabo_front.client.NoteClient;
 import com.medilabosolutions.medilabo_front.client.PatientClient;
 import com.medilabosolutions.medilabo_front.dto.NoteDto;
+import com.medilabosolutions.medilabo_front.dto.PatientDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +19,10 @@ public class NoteFrontController {
 
     @GetMapping("/create")
     public String showAddNoteForm(@RequestParam("patId") String patId, Model model) {
+        PatientDto patient = patientClient.getPatientById(Integer.parseInt(patId));
         NoteDto note = new NoteDto();
         note.setPatId(patId);
+        note.setPatName(patient.getLastName());
         model.addAttribute("note", note);
         return "addNoteForm";
     }
@@ -27,7 +30,7 @@ public class NoteFrontController {
     @PostMapping("/create")
     public String addNote(@ModelAttribute("note") NoteDto note) {
         noteClient.createNote(note);
-        return "redirect:/patients/" + note.getPatId() + "/profile";
+        return "redirect:/patients"  + "/profile/"+ note.getPatId();
     }
 
     @GetMapping("/edit")
@@ -40,13 +43,13 @@ public class NoteFrontController {
     @PostMapping("/edit")
     public String updateNote(@ModelAttribute("note") NoteDto note) {
         noteClient.updateNote(note.getId(),note);
-        return "redirect:/patients/" + note.getPatId() + "/profile";
+        return "redirect:/patients"  + "/profile/"+ note.getPatId();
     }
 
     @GetMapping("/delete")
     public String deleteNote(@RequestParam("noteId") String noteId, @RequestParam("patId") String patId) {
         noteClient.deleteNote(noteId);
-        return "redirect:/patients/" + patId + "/profile";
+        return "redirect:/patients"  + "/profile/"+ patId;
     }
 
 }

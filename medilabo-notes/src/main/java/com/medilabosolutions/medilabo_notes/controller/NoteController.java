@@ -19,8 +19,7 @@ public class NoteController {
 
     //  Create a new Note
     @PostMapping
-    public ResponseEntity<Note> createNote(@RequestParam String patId, @RequestParam String patient, @RequestBody String content) {
-        Note newNote = new Note(patId, patient, content);
+    public ResponseEntity<Note> createNote(@RequestBody Note newNote) {
         noteService.createNote(newNote);
         return ResponseEntity.ok(newNote);
     }
@@ -40,7 +39,7 @@ public class NoteController {
 
     //  Update a Note
     @PutMapping("/{noteId}")
-    public ResponseEntity<Note> updateNote(@PathVariable String noteId, @RequestBody String updatedNote) {
+    public ResponseEntity<Note> updateNote(@PathVariable String noteId, @RequestBody Note updatedNote) {
         Optional<Note> updated = noteService.updateNote(noteId, updatedNote);
         return updated.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

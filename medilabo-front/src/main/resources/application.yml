@@ -12,3 +12,7 @@ patient:
 note:
   client:
     url: http://localhost:8080/notes
+
+assessment:
+  client:
+    url: http://localhost:8080/assessment

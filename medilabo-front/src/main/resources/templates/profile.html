@@ -4,17 +4,6 @@
     <meta charset="UTF-8">
     <title>Profil du Patient</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
-    <style>
-        .container { display: flex; gap: 2rem; padding: 2rem; }
-        .column { flex: 1; padding: 1rem; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9; }
-        h2 { margin-bottom: 1rem; text-align: center; }
-        .note { background-color: #fff; margin-bottom: 1rem; padding: 1rem; border: 1px solid #ddd; border-radius: 5px; position: relative; }
-        .note-buttons { margin-top: 0.5rem; display: flex; gap: 0.5rem; }
-        .top-buttons { margin: 1rem; display: flex; gap: 1rem; }
-        button { padding: 0.5rem 1rem; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer; }
-        button:hover { background-color: #0056b3; }
-        a { text-decoration: none; }
-    </style>
 </head>
 
 <body>
@@ -44,6 +33,9 @@
         <p><strong>Sexe :</strong> <span th:text="${patient.gender}"></span></p>
         <p><strong>Adresse :</strong> <span th:text="${patient.address}"></span></p>
         <p><strong>Téléphone :</strong> <span th:text="${patient.phoneNumber}"></span></p>
+        <p><strong>Évaluation du Risque :</strong>
+            <span th:text="${assessment}" th:class="'risk-' + ${assessment}"></span>
+        </p>
     </div>
 
     <!-- Colonne droite : Notes médicales -->

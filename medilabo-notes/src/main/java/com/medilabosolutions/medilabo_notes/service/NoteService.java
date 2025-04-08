@@ -27,12 +27,14 @@ public class NoteService {
         return noteRepository.findByPatId(patientId);
     }
 
-    public Optional<Note> updateNote(String noteId, String newContent) {
+    public Optional<Note> updateNote(String noteId, Note newNote) {
         Optional<Note> optionalNote = noteRepository.findById(noteId);
 
         if (optionalNote.isPresent()) {
             Note note = optionalNote.get();
-            note.setContent(newContent);
+            note.setPatId(newNote.getPatId());
+            note.setPatName(newNote.getPatName());
+            note.setContent(newNote.getContent());
             return Optional.of(noteRepository.save(note));
         }
         return Optional.empty();

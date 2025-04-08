@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <title>Liste des patients</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
+
 </head>
 <body>
 <h1>Liste des patients</h1>
 
-<div class="top-buttons">
-    <a th:href="@{/patients/add}">Ajouter un nouveau patient</a>
-</div>
+
 
 <table border="1">
     <thead>
@@ -33,12 +32,14 @@
         <td th:text="${patient.address}"></td>
         <td th:text="${patient.phoneNumber}"></td>
         <td>
-            <a th:href="@{/patients/profile/{id}(id=${patient.id})}">Profil</a> |
+
+            <a th:href="@{/patients/profile/{id}(id=${patient.id})}" class="button">Profil</a> |
             <a th:href="@{/patients/delete/{id}(id=${patient.id})}"
-               onclick="return confirm('Supprimer ce patient ?')">Supprimer</a>
+               onclick="return confirm('Supprimer ce patient ?')" class="button">Supprimer</a>
         </td>
     </tr>
     </tbody>
 </table>
+<a th:href="@{/patients/add}" class="button">Ajouter un nouveau patient</a>
 </body>
 </html>
