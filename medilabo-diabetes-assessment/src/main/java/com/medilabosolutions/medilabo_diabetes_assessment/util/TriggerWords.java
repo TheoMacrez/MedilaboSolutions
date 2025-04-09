@@ -16,7 +16,6 @@ public class TriggerWords {
             "Fumeur",
             "Fumeuse",
             "Anormal",
-            "Anormale",
             "Cholestérol",
             "Vertiges",
             "Rechute",

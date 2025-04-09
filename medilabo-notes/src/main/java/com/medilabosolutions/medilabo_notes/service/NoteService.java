@@ -33,7 +33,6 @@ public class NoteService {
         if (optionalNote.isPresent()) {
             Note note = optionalNote.get();
             note.setPatId(newNote.getPatId());
-            note.setPatName(newNote.getPatName());
             note.setContent(newNote.getContent());
             return Optional.of(noteRepository.save(note));
         }

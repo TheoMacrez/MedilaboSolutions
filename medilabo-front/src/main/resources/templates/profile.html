@@ -14,11 +14,11 @@
     <a th:href="@{/patients}">
         <button type="button">Retour à la liste</button>
     </a>
-    <a th:href="@{/notes/create(patId=${patient.id})}">
-        <button type="button">Nouvelle Note</button>
-    </a>
     <a th:href="@{/patients/edit/{id}(id=${patient.id})}">
         <button type="button">Modifier Patient</button>
+    </a>
+    <a th:href="@{/notes/create(patId=${patient.id})}">
+        <button type="button">Nouvelle Note</button>
     </a>
 </nav>
 
@@ -50,7 +50,7 @@
                     <button type="button">Modifier</button>
                 </a>
                 <a th:href="@{/notes/delete(noteId=${note.id}, patId=${patient.id})}">
-                    <button type="button" style="background-color: #dc3545;">Supprimer</button>
+                    <button type="button">Supprimer</button>
                 </a>
             </div>
         </div>

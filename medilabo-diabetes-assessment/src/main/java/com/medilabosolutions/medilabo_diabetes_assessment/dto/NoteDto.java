@@ -11,6 +11,5 @@ import lombok.RequiredArgsConstructor;
 public class NoteDto {
     private String id;
     private int patId;
-    private String patName;
     private String content;
 }

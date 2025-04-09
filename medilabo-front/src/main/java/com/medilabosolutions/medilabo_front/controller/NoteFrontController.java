@@ -22,7 +22,6 @@ public class NoteFrontController {
         PatientDto patient = patientClient.getPatientById(Integer.parseInt(patId));
         NoteDto note = new NoteDto();
         note.setPatId(patId);
-        note.setPatName(patient.getLastName());
         model.addAttribute("note", note);
         return "addNoteForm";
     }

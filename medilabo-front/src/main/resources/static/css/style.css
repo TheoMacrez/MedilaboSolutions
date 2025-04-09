@@ -142,3 +142,32 @@ th {
 .top-buttons a {
     text-decoration: none;
 }
+
+.column p {
+    margin-bottom: 12px; /* ajoute de l'espace entre les lignes d'info */
+    font-size: 1.05em; /* rend le texte légèrement plus lisible */
+}
+
+.note {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.note-buttons {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.container {
+    display: flex;
+    gap: 40px; /* augmente l'écart entre les deux colonnes */
+    margin-top: 30px; /* plus de marge en haut aussi */
+}
+
+main.container {
+    padding: 20px 0;
+}

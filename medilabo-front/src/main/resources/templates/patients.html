@@ -20,7 +20,6 @@
             <th scope="col">Genre</th>
             <th scope="col">Adresse</th>
             <th scope="col">Téléphone</th>
-            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -32,11 +31,19 @@
             <td th:text="${patient.address}"></td>
             <td th:text="${patient.phoneNumber}"></td>
             <td>
-                <a th:href="@{/patients/profile/{id}(id=${patient.id})}" class="button button-view" aria-label="Voir le profil du patient">Profil</a> |
-                <a th:href="@{/patients/delete/{id}(id=${patient.id})}"
-                   onclick="return confirm('Supprimer ce patient ?')"
-                   class="button button-delete"
-                   aria-label="Supprimer le patient">Supprimer</a>
+<!--                <a th:href="@{/patients/profile/{id}(id=${patient.id})}" class="button button-view" aria-label="Voir le profil du patient">Profil</a> -->
+<!--                <a th:href="@{/patients/delete/{id}(id=${patient.id})}"-->
+<!--                   onclick="return confirm('Supprimer ce patient ?')"-->
+<!--                   class="button button-delete"-->
+<!--                   aria-label="Supprimer le patient">Supprimer</a>-->
+                <div class="note-buttons">
+                    <a th:href="@{/patients/profile/{id}(id=${patient.id})}" aria-label="Voir le profil du patient">
+                        <button type="button">Profil</button>
+                    </a>
+                    <a th:href="@{/patients/delete/{id}(id=${patient.id})}" >
+                        <button type="button">Supprimer</button>
+                    </a>
+                </div>
             </td>
         </tr>
         </tbody>

@@ -11,13 +11,11 @@ public class Note {
 
     private String patId;
 
-    private String patName;
 
     private String content;
 
-    public Note(String patId, String patName, String content) {
+    public Note(String patId, String content) {
         this.patId = patId;
-        this.patName = patName;
         this.content = content;
     }
 
@@ -37,13 +35,6 @@ public class Note {
         this.patId = patientId;
     }
 
-    public String getPatName() {
-        return patName;
-    }
-
-    public void setPatName(String patName) {
-        this.patName = patName;
-    }
 
     public String getContent() {
         return content;
