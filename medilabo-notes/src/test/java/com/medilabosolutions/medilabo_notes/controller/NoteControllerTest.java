@@ -2,52 +2,50 @@ package com.medilabosolutions.medilabo_notes.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medilabosolutions.medilabo_notes.model.Note;
-import com.medilabosolutions.medilabo_notes.repository.NoteRepository;
-import org.junit.jupiter.api.AfterEach;
+import com.medilabosolutions.medilabo_notes.service.NoteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.util.List;
+import java.util.Optional;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
+@WebMvcTest(NoteController.class)
 class NoteControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private NoteRepository noteRepository;
+    @MockBean
+    private NoteService noteService; // On MOCKE le service, pas le repository
 
     @Autowired
-    private ObjectMapper objectMapper; // pour convertir des objets en JSON
+    private ObjectMapper objectMapper;
 
     private Note note;
 
     @BeforeEach
     void setUp() {
-        noteRepository.deleteAll(); // Nettoyer la base avant chaque test
-
         note = new Note("patient123", "Première note de test");
-        note = noteRepository.save(note); // On sauvegarde un note pour tester dessus
-    }
-
-    @AfterEach
-    void deleteAfterTest()
-    {
-        noteRepository.deleteAll(); // Nettoyer la base après chaque test
+        note.setId("noteId123");
     }
 
     @Test
     void testCreateNote() throws Exception {
         Note newNote = new Note("patient456", "Nouvelle note");
+
+        doNothing().when(noteService).createNote(any(Note.class));
 
         mockMvc.perform(post("/notes")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -55,10 +53,13 @@ class NoteControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.patId").value("patient456"))
                 .andExpect(jsonPath("$.content").value("Nouvelle note"));
+        verify(noteService, times(1)).createNote(any(Note.class));
     }
 
     @Test
     void testGetNotesByPatient() throws Exception {
+        when(noteService.getNotesByPatient("patient123")).thenReturn(List.of(note));
+
         mockMvc.perform(get("/notes")
                         .param("patId", "patient123"))
                 .andExpect(status().isOk())
@@ -69,7 +70,9 @@ class NoteControllerTest {
 
     @Test
     void testGetNoteById() throws Exception {
-        mockMvc.perform(get("/notes/" + note.getId()))
+        when(noteService.getNoteById("noteId123")).thenReturn(note);
+
+        mockMvc.perform(get("/notes/noteId123"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.patId").value("patient123"))
                 .andExpect(jsonPath("$.content").value("Première note de test"));
@@ -78,8 +81,10 @@ class NoteControllerTest {
     @Test
     void testUpdateNote() throws Exception {
         Note updatedNote = new Note("patient123", "Note mise à jour");
+        when(noteService.updateNote(eq("noteId123"), any(Note.class)))
+                .thenReturn(Optional.of(updatedNote));
 
-        mockMvc.perform(put("/notes/" + note.getId())
+        mockMvc.perform(put("/notes/noteId123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatedNote)))
                 .andExpect(status().isOk())
@@ -88,12 +93,16 @@ class NoteControllerTest {
 
     @Test
     void testDeleteNote() throws Exception {
-        mockMvc.perform(delete("/notes/" + note.getId()))
+        when(noteService.deleteNote("noteId123")).thenReturn(true);
+
+        mockMvc.perform(delete("/notes/noteId123"))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     void testDeleteNonExistingNote() throws Exception {
+        when(noteService.deleteNote("invalid-id")).thenReturn(false);
+
         mockMvc.perform(delete("/notes/invalid-id"))
                 .andExpect(status().isNotFound());
     }
