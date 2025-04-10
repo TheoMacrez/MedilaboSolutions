@@ -9,6 +9,8 @@
 <h1>Modifier le patient</h1>
 
 <form th:action="@{/patients/edit/{id}(id=${patient.id})}" th:object="${patient}" method="post">
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
   <label for="firstName">Prénom:</label>
   <input type="text" id="firstName" th:field="*{firstName}" />
   <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
