@@ -1,12 +1,11 @@
 package com.medilabosolutions.medilabo_front.controller;
 
-import com.medilabosolutions.medilabo_diabetes_assessment.model.AssessmentRisk;
 import com.medilabosolutions.medilabo_front.client.AssessmentClient;
 import com.medilabosolutions.medilabo_front.client.NoteClient;
 import com.medilabosolutions.medilabo_front.client.PatientClient;
+import com.medilabosolutions.medilabo_front.dto.AssessmentRiskDto;
 import com.medilabosolutions.medilabo_front.dto.NoteDto;
 import com.medilabosolutions.medilabo_front.dto.PatientDto;
-import com.medilabosolutions.medilabo_patient.model.Patient;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -69,7 +68,7 @@ public class PatientFrontController {
             return "updateForm";
         }
         patientClient.updatePatient(id, patientDto);
-        return "redirect:/patients";
+        return "profile";
     }
 
     @GetMapping("/delete/{id}")
@@ -85,7 +84,7 @@ public class PatientFrontController {
 
         // Ajout de l'assessment pour ce patient
         String assessment = "Indisponible";
-        AssessmentRisk risk = assessmentClient.assessPatient(id);
+        AssessmentRiskDto risk = assessmentClient.assessPatient(id);
         assessment = risk.name();
 
         model.addAttribute("patient", patient);

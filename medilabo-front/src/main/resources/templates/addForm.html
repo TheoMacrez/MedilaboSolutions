@@ -9,7 +9,6 @@
 <h1>Ajouter un patient</h1>
 
 <form th:action="@{/patients/create}" th:object="${patient}" method="post">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
     <div>
         <label for="firstName">Prénom:</label>

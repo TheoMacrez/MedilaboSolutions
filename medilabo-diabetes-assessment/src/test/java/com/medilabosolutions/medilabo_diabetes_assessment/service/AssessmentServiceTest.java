@@ -6,7 +6,6 @@ import com.medilabosolutions.medilabo_diabetes_assessment.dto.Gender;
 import com.medilabosolutions.medilabo_diabetes_assessment.dto.NoteDto;
 import com.medilabosolutions.medilabo_diabetes_assessment.dto.PatientDto;
 import com.medilabosolutions.medilabo_diabetes_assessment.model.AssessmentRisk;
-import com.medilabosolutions.medilabo_patient.exceptions.PatientNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -118,15 +117,6 @@ class AssessmentServiceTest {
 
         // Assert
         assertEquals(AssessmentRisk.None, risk);
-    }
-
-    @Test
-    void assessRisk_shouldThrowException_whenPatientNotFound() {
-        // Arrange
-        when(patientClient.getPatientById(1)).thenReturn(null);
-
-        // Act + Assert
-        assertThrows(PatientNotFoundException.class, () -> assessmentService.assessRisk(1));
     }
 
     @Test

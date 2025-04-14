@@ -1,8 +1,7 @@
-
-
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
+    org.springframework.web: DEBUG
 server:
   port: 8080
 
@@ -16,23 +15,30 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: medilabo-patient
-          uri: http://localhost:8081
-          predicates:
-            - Path=/patients/**
         - id: medilabo-front
           uri: http://localhost:8082
           predicates:
-            - Path=/css/**
+            - Path=/patients/**,/notes/**,/css/**
+        - id: medilabo-patient
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/patients/**
         - id: medilabo-notes
           uri: http://localhost:8083
           predicates:
-            - Path=/notes/**
+            - Path=/api/notes/**
         - id: medilabo-diabetes-assessment
           uri: http://localhost:8084
           predicates:
-              - Path=/assessment/**
-
+            - Path=/assessment/**
+        - id: fallback
+          uri: http://localhost:8082/error
+          predicates:
+            - Path=/error
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 
 management:
   endpoints:
@@ -42,8 +48,5 @@ management:
   endpoint:
     gateway:
       enabled: true
-
-
-
-
-
+  security:
+    enabled: false

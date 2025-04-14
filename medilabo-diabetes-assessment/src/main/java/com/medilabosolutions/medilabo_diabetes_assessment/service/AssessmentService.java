@@ -7,7 +7,6 @@ import com.medilabosolutions.medilabo_diabetes_assessment.dto.NoteDto;
 import com.medilabosolutions.medilabo_diabetes_assessment.dto.PatientDto;
 import com.medilabosolutions.medilabo_diabetes_assessment.model.AssessmentRisk;
 import com.medilabosolutions.medilabo_diabetes_assessment.util.TriggerWords;
-import com.medilabosolutions.medilabo_patient.exceptions.PatientNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,9 +28,6 @@ public class AssessmentService {
         PatientDto patient = patientClient.getPatientById(patId);
         List<NoteDto> notes = noteClient.getNotesByPatientId(String.valueOf(patId));
 
-        if (patient == null) {
-            throw new PatientNotFoundException("Patient with id " + patId + " not found.");
-        }
         if(notes.isEmpty())
             return AssessmentRisk.None;
 

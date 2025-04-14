@@ -7,8 +7,8 @@ server:
 
 patient:
   service:
-    url: http://localhost:8081/patients
+    url: http://localhost:8081/api/patients
 note:
   service:
-    url: http://localhost:8083/notes
+    url: http://localhost:8083/api/notes
 

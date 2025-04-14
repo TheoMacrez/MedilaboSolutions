@@ -5,7 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class,
+		org.springframework.boot.actuate.autoconfigure.security.reactive.ReactiveManagementWebSecurityAutoConfiguration.class,
+		org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration.class})
 @EnableWebFlux
 public class MedilaboGatewayApplication {
 

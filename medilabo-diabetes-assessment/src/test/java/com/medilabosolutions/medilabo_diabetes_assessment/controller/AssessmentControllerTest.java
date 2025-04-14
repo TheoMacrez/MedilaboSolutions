@@ -2,7 +2,6 @@ package com.medilabosolutions.medilabo_diabetes_assessment.controller;
 
 import com.medilabosolutions.medilabo_diabetes_assessment.model.AssessmentRisk;
 import com.medilabosolutions.medilabo_diabetes_assessment.service.AssessmentService;
-import com.medilabosolutions.medilabo_patient.exceptions.PatientNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -41,16 +40,5 @@ class AssessmentControllerTest {
                 .andExpect(content().json("\"InDanger\""));
     }
 
-    @Test
-    @DisplayName("Should return 404 when patient is not found")
-    void assessPatient_patientNotFound() throws Exception {
-        // Arrange : simuler que assessRisk() lève une PatientNotFoundException
-        Mockito.when(assessmentService.assessRisk(anyInt()))
-                .thenThrow(new PatientNotFoundException("Patient not found"));
 
-        // Act + Assert
-        mockMvc.perform(get("/assessment/1") // exemple avec id 1
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
-    }
 }
