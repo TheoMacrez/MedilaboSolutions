@@ -1,6 +1,33 @@
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+    hibernate: DEBUG
+    com:
+      medilabosolutions:
+        medilabo_front: DEBUG
+
 spring:
   application:
     name: medilabo-front
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: medilabo-front
+            client-secret: YOUR_CLIENT_SECRET
+            scope: openid, profile, email
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost:8082/login/oauth2/code/keycloak"
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8090/realms/medilabo
+
+
+
 
 server:
   port: 8082

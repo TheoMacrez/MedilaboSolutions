@@ -1,5 +1,6 @@
 package com.medilabosolutions.medilabo_front.client;
 
+
 import com.medilabosolutions.medilabo_front.dto.AssessmentRiskDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
