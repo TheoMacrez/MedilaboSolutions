@@ -3,9 +3,9 @@ spring:
         name: medilabo-notes
     data:
         mongodb:
-            host: localhost
-            port: 27017
-            database: notes
+            host: ${MONGODB_HOST:localhost}
+            port: ${MONGODB_PORT:27017}
+            database: ${MONGODB_DATABASE:notes}
 
 server:
     port: 8083

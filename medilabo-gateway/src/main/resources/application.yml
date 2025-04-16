@@ -16,25 +16,21 @@ spring:
     gateway:
       routes:
         - id: medilabo-front
-          uri: http://localhost:8082
+          uri: ${FRONT_URL:http://localhost:8082}
           predicates:
             - Path=/patients/**,/notes/**,/css/**
         - id: medilabo-patient
-          uri: http://localhost:8081
+          uri: ${PATIENT_URL:http://localhost:8081}
           predicates:
             - Path=/api/patients/**
         - id: medilabo-notes
-          uri: http://localhost:8083
+          uri: ${NOTES_URL:http://localhost:8083}
           predicates:
             - Path=/api/notes/**
         - id: medilabo-diabetes-assessment
-          uri: http://localhost:8084
+          uri: ${ASSESSMENT_URL:http://localhost:8084}
           predicates:
             - Path=/assessment/**
-        - id: fallback
-          uri: http://localhost:8082/error
-          predicates:
-            - Path=/error
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration

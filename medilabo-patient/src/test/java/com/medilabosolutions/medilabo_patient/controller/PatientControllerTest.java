@@ -75,7 +75,7 @@ class PatientControllerTest {
     void shouldGetAllPatients() throws Exception {
         when(patientService.getAllPatients()).thenReturn(List.of(patient));
 
-        mockMvc.perform(get("/patients"))
+        mockMvc.perform(get("/api/patients"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(1))
                 .andExpect(jsonPath("$[0].firstName").value("John"));
@@ -85,7 +85,7 @@ class PatientControllerTest {
     void shouldGetPatientById() throws Exception {
         when(patientService.getPatientById(1)).thenReturn(patient);
 
-        mockMvc.perform(get("/patients/1"))
+        mockMvc.perform(get("/api/patients/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("John"));
     }
@@ -97,7 +97,7 @@ class PatientControllerTest {
         String patientJson = objectMapper.writeValueAsString(patient);
         System.out.println(patientJson); // Vérifiez le JSON
 
-        mockMvc.perform(post("/patients/create")
+        mockMvc.perform(post("/api/patients/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(patientJson))
                 .andExpect(status().isOk())
@@ -110,7 +110,7 @@ class PatientControllerTest {
     void shouldUpdatePatient() throws Exception {
         when(patientService.updatePatient(Mockito.eq(1), any(Patient.class))).thenReturn(patient);
 
-        mockMvc.perform(put("/patients/1")
+        mockMvc.perform(put("/api/patients/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(patient)))
                 .andExpect(status().isOk())
@@ -119,7 +119,7 @@ class PatientControllerTest {
 
     @Test
     void shouldDeletePatient() throws Exception {
-        mockMvc.perform(delete("/patients/1"))
+        mockMvc.perform(delete("/api/patients/1"))
                 .andExpect(status().isNoContent());
     }
 
@@ -136,7 +136,7 @@ class PatientControllerTest {
                 .phoneNumber("0123456789")
                 .build();
 
-        mockMvc.perform(post("/patients/create")
+        mockMvc.perform(post("/api/patients/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidPatient)))
                 .andExpect(status().isBadRequest())

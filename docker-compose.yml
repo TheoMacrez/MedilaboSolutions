@@ -1,0 +1,99 @@
+services:
+
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootroot
+      MYSQL_DATABASE: medilabo_patient
+    ports:
+      - "3307:3306"
+    networks:
+      - medilabo-net
+
+  mongo:
+    image: mongo:5
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    networks:
+      - medilabo-net
+
+
+  medilabo-patient:
+    build:
+      context: ./medilabo-patient
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/medilabo_patient?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      DB_USERNAME: root
+      DB_PASSWORD: rootroot
+    networks:
+      - medilabo-net
+
+  medilabo-notes:
+    build:
+      context: ./medilabo-notes
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mongo
+    environment:
+      MONGODB_HOST: mongo
+      MONGODB_PORT: 27017
+      MONGODB_DATABASE: notes
+    networks:
+      - medilabo-net
+
+  medilabo-gateway:
+    build:
+      context: ./medilabo-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - medilabo-patient
+      - medilabo-notes
+      - medilabo-diabetes-assessment
+    environment:
+      PATIENT_URL: http://medilabo-patient:8081
+      NOTES_URL: http://medilabo-notes:8083
+      ASSESSMENT_URL: http://medilabo-diabetes-assessment:8084
+      FRONT_URL: http://medilabo-front:8082
+    networks:
+      - medilabo-net
+
+  medilabo-front:
+    build:
+      context: ./medilabo-front
+    ports:
+      - "8082:8082"
+    depends_on:
+      - medilabo-gateway
+    environment:
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/medilabo
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_REDIRECT_URI: http://localhost:8082/login/oauth2/code/keycloak
+      PATIENT_API_URL: http://medilabo-gateway:8080/api/patients
+      NOTE_API_URL: http://medilabo-gateway:8080/api/notes
+      ASSESSMENT_API_URL: http://medilabo-gateway:8080/assessment
+    networks:
+      - medilabo-net
+
+  medilabo-diabetes-assessment:
+    build:
+      context: ./medilabo-diabetes-assessment
+    ports:
+      - "8084:8084"
+    depends_on:
+      - medilabo-patient
+      - medilabo-notes
+    environment:
+      PATIENT_SERVICE_URL: http://medilabo-patient:8081/api/patients
+      NOTE_SERVICE_URL: http://medilabo-notes:8083/api/notes
+    networks:
+      - medilabo-net
+
+networks:
+  medilabo-net:

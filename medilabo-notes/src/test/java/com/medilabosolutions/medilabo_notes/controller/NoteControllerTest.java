@@ -47,7 +47,7 @@ class NoteControllerTest {
 
         doNothing().when(noteService).createNote(any(Note.class));
 
-        mockMvc.perform(post("/notes")
+        mockMvc.perform(post("/api/notes")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newNote)))
                 .andExpect(status().isOk())
@@ -60,7 +60,7 @@ class NoteControllerTest {
     void testGetNotesByPatient() throws Exception {
         when(noteService.getNotesByPatient("patient123")).thenReturn(List.of(note));
 
-        mockMvc.perform(get("/notes")
+        mockMvc.perform(get("/api/notes")
                         .param("patId", "patient123"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -72,7 +72,7 @@ class NoteControllerTest {
     void testGetNoteById() throws Exception {
         when(noteService.getNoteById("noteId123")).thenReturn(note);
 
-        mockMvc.perform(get("/notes/noteId123"))
+        mockMvc.perform(get("/api/notes/noteId123"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.patId").value("patient123"))
                 .andExpect(jsonPath("$.content").value("Première note de test"));
@@ -84,7 +84,7 @@ class NoteControllerTest {
         when(noteService.updateNote(eq("noteId123"), any(Note.class)))
                 .thenReturn(Optional.of(updatedNote));
 
-        mockMvc.perform(put("/notes/noteId123")
+        mockMvc.perform(put("/api/notes/noteId123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatedNote)))
                 .andExpect(status().isOk())
@@ -95,7 +95,7 @@ class NoteControllerTest {
     void testDeleteNote() throws Exception {
         when(noteService.deleteNote("noteId123")).thenReturn(true);
 
-        mockMvc.perform(delete("/notes/noteId123"))
+        mockMvc.perform(delete("/api/notes/noteId123"))
                 .andExpect(status().isNoContent());
     }
 
@@ -103,7 +103,7 @@ class NoteControllerTest {
     void testDeleteNonExistingNote() throws Exception {
         when(noteService.deleteNote("invalid-id")).thenReturn(false);
 
-        mockMvc.perform(delete("/notes/invalid-id"))
+        mockMvc.perform(delete("/api/notes/invalid-id"))
                 .andExpect(status().isNotFound());
     }
 }

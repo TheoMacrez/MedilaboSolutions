@@ -7,8 +7,8 @@ server:
 
 patient:
   service:
-    url: http://localhost:8081/api/patients
+    url: ${PATIENT_SERVICE_URL:http://localhost:8081/api/patients}
 note:
   service:
-    url: http://localhost:8083/api/notes
+    url: ${NOTE_SERVICE_URL:http://localhost:8083/api/notes}
 
