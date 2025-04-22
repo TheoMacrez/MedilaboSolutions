@@ -10,6 +10,12 @@ services:
       - "3307:3306"
     networks:
       - medilabo-net
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootroot" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   mongo:
     image: mongo:5
@@ -20,13 +26,29 @@ services:
       - medilabo-net
 
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2
+    container_name: keycloak
+    command: start-dev --import-realm
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8090:8080"
+    volumes:
+      - ./medilabo-realm.json:/opt/keycloak/data/import/medilabo-realm.json
+    networks:
+      - medilabo-net
+
+
   medilabo-patient:
     build:
       context: ./medilabo-patient
     ports:
       - "8081:8081"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     environment:
       DB_URL: jdbc:mysql://mysql:3306/medilabo_patient?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       DB_USERNAME: root
@@ -72,9 +94,10 @@ services:
       - "8082:8082"
     depends_on:
       - medilabo-gateway
+      - keycloak
     environment:
-      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/medilabo
-      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_REDIRECT_URI: http://localhost:8082/login/oauth2/code/keycloak
+      KEYCLOAK_ISSUER_URI: http://host.docker.internal:8090/realms/medilabo
+      KEYCLOAK_REDIRECT_URI: http://localhost:8082/login/oauth2/code/keycloak
       PATIENT_API_URL: http://medilabo-gateway:8080/api/patients
       NOTE_API_URL: http://medilabo-gateway:8080/api/notes
       ASSESSMENT_API_URL: http://medilabo-gateway:8080/assessment

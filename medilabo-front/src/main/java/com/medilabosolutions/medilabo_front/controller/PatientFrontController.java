@@ -68,7 +68,7 @@ public class PatientFrontController {
             return "updateForm";
         }
         patientClient.updatePatient(id, patientDto);
-        return "profile";
+        return "redirect:/patients" +"/profile/" + id;
     }
 
     @GetMapping("/delete/{id}")

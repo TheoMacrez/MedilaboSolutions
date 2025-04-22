@@ -10,5 +10,5 @@ COPY target/medilabo-patient-0.0.1-SNAPSHOT.jar app.jar
 # Étape 4 : exposer le port sur lequel l'application va écouter
 EXPOSE 8081
 
-# Étape 4 : définir la commande à exécuter au lancement du conteneur
+# Étape 5 : définir la commande à exécuter au lancement du conteneur
 ENTRYPOINT ["java", "-jar", "app.jar"]
