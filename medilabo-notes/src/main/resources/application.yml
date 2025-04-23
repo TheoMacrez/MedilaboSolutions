@@ -6,7 +6,11 @@ spring:
             host: ${MONGODB_HOST:localhost}
             port: ${MONGODB_PORT:27017}
             database: ${MONGODB_DATABASE:notes}
-
+    security:
+        oauth2:
+            resourceserver:
+                jwt:
+                    issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8090/realms/medilabo}
 server:
     port: 8083
 

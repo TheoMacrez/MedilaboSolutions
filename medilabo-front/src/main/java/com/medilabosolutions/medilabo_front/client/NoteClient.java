@@ -1,12 +1,13 @@
 package com.medilabosolutions.medilabo_front.client;
 
+import com.medilabosolutions.medilabo_front.config.OAuth2FeignRequestInterceptor;
 import com.medilabosolutions.medilabo_front.dto.NoteDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "note-client-gateway", url = "${note.client.url}")
+@FeignClient(name = "note-client-gateway", url = "${note.client.url}", configuration = OAuth2FeignRequestInterceptor.class)
 public interface NoteClient {
 
     @GetMapping

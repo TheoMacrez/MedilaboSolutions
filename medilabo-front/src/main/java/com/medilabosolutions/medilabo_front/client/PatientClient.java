@@ -1,13 +1,14 @@
 package com.medilabosolutions.medilabo_front.client;
 
 
+import com.medilabosolutions.medilabo_front.config.OAuth2FeignRequestInterceptor;
 import com.medilabosolutions.medilabo_front.dto.PatientDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "patient-client-gateway", url = "${patient.client.url}")
+@FeignClient(name = "patient-client-gateway", url = "${patient.client.url}", configuration = OAuth2FeignRequestInterceptor.class)
 public interface PatientClient {
 
     @GetMapping

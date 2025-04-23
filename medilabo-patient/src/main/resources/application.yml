@@ -26,6 +26,14 @@ spring:
       data-locations: classpath:data.sql
       schema-locations: classpath:schema.sql
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8090/realms/medilabo}
+
+
+
 logging:
   level:
     org.springframework: INFO

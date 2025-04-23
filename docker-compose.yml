@@ -50,6 +50,7 @@ services:
       mysql:
         condition: service_healthy
     environment:
+      KEYCLOAK_ISSUER_URI: http://host.docker.internal:8090/realms/medilabo
       DB_URL: jdbc:mysql://mysql:3306/medilabo_patient?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       DB_USERNAME: root
       DB_PASSWORD: rootroot
@@ -64,6 +65,7 @@ services:
     depends_on:
       - mongo
     environment:
+      KEYCLOAK_ISSUER_URI: http://host.docker.internal:8090/realms/medilabo
       MONGODB_HOST: mongo
       MONGODB_PORT: 27017
       MONGODB_DATABASE: notes
@@ -113,6 +115,7 @@ services:
       - medilabo-patient
       - medilabo-notes
     environment:
+      KEYCLOAK_ISSUER_URI: http://host.docker.internal:8090/realms/medilabo
       PATIENT_SERVICE_URL: http://medilabo-patient:8081/api/patients
       NOTE_SERVICE_URL: http://medilabo-notes:8083/api/notes
     networks:
