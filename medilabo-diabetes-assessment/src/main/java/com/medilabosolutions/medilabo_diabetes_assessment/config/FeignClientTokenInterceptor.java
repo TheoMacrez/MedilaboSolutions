@@ -7,9 +7,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
+/**
+ * Intercepteur Feign ajoutant automatiquement le token JWT
+ * d'authentification dans les appels sortants.
+ */
 @Configuration
 public class FeignClientTokenInterceptor {
 
+
+    /**
+     * Configure l'intercepteur pour insérer l'en-tête Authorization Bearer.
+     *
+     * @return {@link RequestInterceptor}
+     */
     @Bean
     public RequestInterceptor requestInterceptor() {
         return new RequestInterceptor() {

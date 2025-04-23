@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controller permettant de gérer les opérations liées aux patients via l'interface front-end.
+ */
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/patients")
@@ -28,6 +31,9 @@ public class PatientFrontController {
 
     private final AssessmentClient assessmentClient;
 
+    /**
+     * Affiche la liste de tous les patients.
+     */
     @GetMapping
     public String listPatients(Model model) {
         List<PatientDto> patients = patientClient.getAllPatients();
@@ -37,12 +43,18 @@ public class PatientFrontController {
         return "patients";
     }
 
+    /**
+     * Affiche le formulaire d'ajout d'un nouveau patient.
+     */
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("patient", new PatientDto());
         return "addForm";
     }
 
+    /**
+     * Traite l'ajout d'un nouveau patient après validation.
+     */
     @PostMapping("/add")
     public String addPatient(@Valid @ModelAttribute("patient") PatientDto patientDto,
                              BindingResult result) {
@@ -53,6 +65,9 @@ public class PatientFrontController {
         return "redirect:/patients";
     }
 
+    /**
+     * Affiche le formulaire de modification d'un patient existant.
+     */
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable int id, Model model) {
         PatientDto patient = patientClient.getPatientById(id);
@@ -60,6 +75,9 @@ public class PatientFrontController {
         return "updateForm";
     }
 
+    /**
+     * Traite la mise à jour d'un patient après validation.
+     */
     @PostMapping("/edit/{id}")
     public String updatePatient(@PathVariable int id,
                                 @Valid @ModelAttribute("patient") PatientDto patientDto,
@@ -71,12 +89,18 @@ public class PatientFrontController {
         return "redirect:/patients" +"/profile/" + id;
     }
 
+    /**
+     * Supprime un patient selon son identifiant.
+     */
     @GetMapping("/delete/{id}")
     public String deletePatient(@PathVariable int id) {
         patientClient.deletePatient(id);
         return "redirect:/patients";
     }
 
+    /**
+     * Affiche le profil détaillé d'un patient, incluant ses notes et son évaluation de risque.
+     */
     @GetMapping("/profile/{id}")
     public String showPatientProfile(@PathVariable int id, Model model) {
         PatientDto patient = patientClient.getPatientById(id);

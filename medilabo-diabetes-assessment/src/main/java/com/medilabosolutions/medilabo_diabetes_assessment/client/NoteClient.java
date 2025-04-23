@@ -9,9 +9,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "note-service", url = "${note.service.url}",configuration = FeignClientTokenInterceptor.class)
+/**
+ * Client Feign pour communiquer avec le service de notes médicales.
+ */
+@FeignClient(name = "note-service", url = "${note.service.url}", configuration = FeignClientTokenInterceptor.class)
 public interface NoteClient {
 
+    /**
+     * Récupère toutes les notes associées à un patient donné.
+     *
+     * @param patId identifiant du patient
+     * @return liste de {@link NoteDto}
+     */
     @GetMapping
     List<NoteDto> getNotesByPatientId(@RequestParam String patId);
 }
+

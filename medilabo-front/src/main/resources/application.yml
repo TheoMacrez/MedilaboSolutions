@@ -1,41 +1,45 @@
+# Configuration du niveau de log pour faciliter le debug pendant le développement
 logging:
   level:
     org:
       springframework:
-        web: DEBUG
-    hibernate: DEBUG
+        web: DEBUG   # Affiche les requêtes/réponses HTTP de Spring MVC
+    hibernate: DEBUG  # Affiche les requêtes SQL générées par Hibernate
     com:
       medilabosolutions:
-        medilabo_front: DEBUG
+        medilabo_front: DEBUG  # Log plus verbeux pour ton application
 
+# Paramètres principaux de Spring Boot
 spring:
   application:
-    name: medilabo-front
+    name: medilabo-front  # Nom de l'application dans le contexte Spring Boot
   security:
     oauth2:
       client:
         registration:
           keycloak:
-            client-id: medilabo-front
-            client-secret: YOUR_CLIENT_SECRET
-            scope: openid, profile, email
-            authorization-grant-type: authorization_code
-            redirect-uri: ${KEYCLOAK_REDIRECT_URI:http://localhost:8082/login/oauth2/code/keycloak}
+            client-id: medilabo-front  # ID du client Keycloak
+            client-secret: YOUR_CLIENT_SECRET  # Secret du client Keycloak (penser à sécuriser en prod)
+            scope: openid, profile, email  # Scopes demandés à Keycloak
+            authorization-grant-type: authorization_code  # Type de flow OAuth2
+            redirect-uri: ${KEYCLOAK_REDIRECT_URI:http://localhost:8082/login/oauth2/code/keycloak}  # URI de redirection après login
         provider:
           keycloak:
-            issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8090/realms/medilabo}
+            issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8090/realms/medilabo}  # URI du realm Keycloak pour valider les tokens
 
+# Configuration du serveur embarqué
 server:
-  port: 8082
+  port: 8082  # Port sur lequel tourne l'application front
 
+# URLs des microservices appelés par le front via Feign
 patient:
   client:
-    url: ${PATIENT_API_URL:http://localhost:8080/api/patients}
+    url: ${PATIENT_API_URL:http://localhost:8080/api/patients}  # URL du microservice Patient
 
 note:
   client:
-    url: ${NOTE_API_URL:http://localhost:8080/api/notes}
+    url: ${NOTE_API_URL:http://localhost:8080/api/notes}  # URL du microservice Note
 
 assessment:
   client:
-    url: ${ASSESSMENT_API_URL:http://localhost:8080/assessment}
+    url: ${ASSESSMENT_API_URL:http://localhost:8080/assessment}  # URL du microservice d'évaluation du risque

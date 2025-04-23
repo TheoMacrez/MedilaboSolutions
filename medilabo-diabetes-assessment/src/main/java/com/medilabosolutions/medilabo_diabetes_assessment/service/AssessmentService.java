@@ -13,17 +13,34 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
+/**
+ * Service permettant d'évaluer le risque de diabète d'un patient
+ * en analysant ses notes médicales.
+ */
 @Service
 public class AssessmentService {
 
     private final PatientClient patientClient;
     private final NoteClient noteClient;
 
+
+    /**
+     * Constructeur du service d'évaluation.
+     *
+     * @param patientClient client pour récupérer les données patient
+     * @param noteClient client pour récupérer les notes associées au patient
+     */
     public AssessmentService(PatientClient patientClient, NoteClient noteClient) {
         this.patientClient = patientClient;
         this.noteClient = noteClient;
     }
 
+    /**
+     * Évalue le risque de diabète d'un patient à partir de son identifiant.
+     *
+     * @param patId identifiant du patient
+     * @return niveau de risque {@link AssessmentRisk}
+     */
     public AssessmentRisk assessRisk(int patId) {
         PatientDto patient = patientClient.getPatientById(patId);
         List<NoteDto> notes = noteClient.getNotesByPatientId(String.valueOf(patId));
@@ -41,6 +58,12 @@ public class AssessmentService {
         return determineRisk(age,triggerWordCount,patient.getGender()); // (exemple)
     }
 
+    /**
+     * Compte le nombre de mots déclencheurs présents dans le contenu donné.
+     *
+     * @param content contenu textuel d'une note médicale
+     * @return nombre de mots déclencheurs détectés
+     */
     private int countTriggerWords(String content)
     {
         int count = 0;
@@ -52,10 +75,25 @@ public class AssessmentService {
         return count;
     }
 
+    /**
+     * Calcule l'âge d'un patient à partir de sa date de naissance.
+     *
+     * @param birthDate date de naissance
+     * @return âge en années
+     */
     private int calculateAge(LocalDate birthDate) {
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
 
+    /**
+     * Détermine le niveau de risque en fonction de l'âge, du nombre de mots déclencheurs
+     * et du genre du patient.
+     *
+     * @param age âge du patient
+     * @param triggerCount nombre de mots déclencheurs trouvés
+     * @param gender genre du patient
+     * @return niveau de risque {@link AssessmentRisk}
+     */
     private AssessmentRisk determineRisk(int age, int triggerCount, Gender gender)
     {
         if (triggerCount == 0) {

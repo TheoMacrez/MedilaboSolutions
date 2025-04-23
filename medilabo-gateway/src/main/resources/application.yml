@@ -1,48 +1,62 @@
+# Configuration du niveau de log
 logging:
   level:
-    org.springframework.cloud.gateway: DEBUG
-    org.springframework.web: DEBUG
-server:
-  port: 8080
+    org.springframework.cloud.gateway: DEBUG  # Active les logs détaillés pour le Gateway
+    org.springframework.web: DEBUG             # Active les logs détaillés pour les requêtes web
 
+# Configuration du serveur
+server:
+  port: 8080  # Le Gateway sera accessible sur le port 8080
+
+# Configuration de l'application Spring
 spring:
   application:
     name: medilabo-gateway
 
   main:
-    web-application-type: reactive
+    web-application-type: reactive  # L'application utilise un modèle WebFlux (réactif)
 
   cloud:
     gateway:
       routes:
+        # Route vers le front-end
         - id: medilabo-front
-          uri: ${FRONT_URL:http://localhost:8082}
+          uri: ${FRONT_URL:http://localhost:8082}  # URL du front-end, configurable via variable d'environnement
           predicates:
-            - Path=/patients/**,/notes/**,/css/**
+            - Path=/patients/**,/notes/**,/css/**  # Redirige les chemins liés aux patients, notes, et ressources CSS
+
+        # Route vers le microservice patient
         - id: medilabo-patient
-          uri: ${PATIENT_URL:http://localhost:8081}
+          uri: ${PATIENT_URL:http://localhost:8081}  # URL du microservice patient
           predicates:
-            - Path=/api/patients/**
+            - Path=/api/patients/**  # Redirige les appels API liés aux patients
+
+        # Route vers le microservice notes
         - id: medilabo-notes
-          uri: ${NOTES_URL:http://localhost:8083}
+          uri: ${NOTES_URL:http://localhost:8083}  # URL du microservice notes
           predicates:
-            - Path=/api/notes/**
+            - Path=/api/notes/**  # Redirige les appels API liés aux notes
+
+        # Route vers le microservice d'évaluation du diabète
         - id: medilabo-diabetes-assessment
-          uri: ${ASSESSMENT_URL:http://localhost:8084}
+          uri: ${ASSESSMENT_URL:http://localhost:8084}  # URL du microservice d'évaluation
           predicates:
-            - Path=/assessment/**
+            - Path=/assessment/**  # Redirige les appels liés à l'évaluation du risque de diabète
+
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration
       - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+      # Désactive l'auto-configuration de la sécurité Spring pour éviter des blocages par défaut
 
+# Configuration de l'administration (actuator)
 management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: "*"  # Expose tous les endpoints d'Actuator (utile pour le monitoring)
   endpoint:
     gateway:
-      enabled: true
+      enabled: true  # Active l'endpoint spécifique à Spring Cloud Gateway (infos sur les routes)
   security:
-    enabled: false
+    enabled: false  # Désactive la sécurité sur les endpoints Actuator (attention en production !)

@@ -6,9 +6,19 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "patient-service", url = "${patient.service.url}",configuration = FeignClientTokenInterceptor.class)
+/**
+ * Client Feign pour communiquer avec le service patient.
+ */
+@FeignClient(name = "patient-service", url = "${patient.service.url}", configuration = FeignClientTokenInterceptor.class)
 public interface PatientClient {
 
+    /**
+     * Récupère les informations d'un patient par son identifiant.
+     *
+     * @param id identifiant du patient
+     * @return {@link PatientDto}
+     */
     @GetMapping("/{id}")
     PatientDto getPatientById(@PathVariable("id") int id);
 }
+

@@ -17,7 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 
 import org.springframework.boot.test.context.SpringBootTest;
 
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 
 import org.springframework.test.web.servlet.MockMvc;
@@ -58,8 +57,7 @@ class PatientControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this); // Initialise les mocks
         mockMvc = MockMvcBuilders.standaloneSetup(patientController).setControllerAdvice(new GlobalExceptionHandler()).build(); // Configure MockMvc
-//        mockMvc = MockMvcBuilders.webAppContextSetup(context)
-//                .build();
+
 
         patient = Patient.builder()
                 .id(1)

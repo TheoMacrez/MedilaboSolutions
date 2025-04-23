@@ -7,15 +7,24 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
+/**
+ * Classe permettant d'initialiser la base de données avec des données de test au lancement de l'application.
+ */
 @Component
 public class DataBaseSeeder implements CommandLineRunner {
 
     @Autowired
-    private  NoteRepository noteRepository;
+    private NoteRepository noteRepository;
 
+    /**
+     * Méthode exécutée au démarrage de l'application pour insérer des notes par défaut si la base est vide.
+     *
+     * @param args arguments d'exécution (non utilisés ici)
+     * @throws Exception en cas d'erreur
+     */
     @Override
     public void run(String... args) throws Exception {
-        if (noteRepository.count() == 0) {  // <-- ici on vérifie que la collection est vide
+        if (noteRepository.count() == 0) {
             List<Note> notes = List.of(
                     new Note("1", "Le patient déclare qu'il 'se sent très bien' Poids égal ou inférieur au poids recommandé"),
                     new Note("2", "Le patient déclare qu'il ressent beaucoup de stress au travail Il se plaint également que son audition est anormale dernièrement"),
@@ -33,8 +42,5 @@ public class DataBaseSeeder implements CommandLineRunner {
         } else {
             System.out.println("ℹ️ La base de données contient déjà des notes. Aucun ajout effectué.");
         }
-
-
-
     }
 }

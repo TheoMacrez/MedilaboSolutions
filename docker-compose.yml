@@ -1,5 +1,6 @@
 services:
 
+  # Service MySQL pour la base de données des patients
   mysql:
     image: mysql:8
     container_name: mysql
@@ -7,119 +8,125 @@ services:
       MYSQL_ROOT_PASSWORD: rootroot
       MYSQL_DATABASE: medilabo_patient
     ports:
-      - "3307:3306"
+      - "3307:3306"  # Expose le port 3306 (MySQL) sur le port 3307 de la machine hôte
     networks:
-      - medilabo-net
+      - medilabo-net  # Se connecte au réseau "medilabo-net"
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootroot" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 20s
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootroot" ]  # Test de disponibilité
+      interval: 10s  # Test toutes les 10 secondes
+      timeout: 5s  # Délai avant timeout
+      retries: 5  # Nombre de tentatives avant d'échouer
+      start_period: 20s  # Période de démarrage avant de commencer les tests
 
+  # Service MongoDB pour stocker les notes
   mongo:
     image: mongo:5
     container_name: mongodb
     ports:
-      - "27017:27017"
+      - "27017:27017"  # Expose le port 27017 (MongoDB)
     networks:
       - medilabo-net
 
-
+  # Service Keycloak pour l'authentification OAuth2
   keycloak:
     image: quay.io/keycloak/keycloak:26.2
     container_name: keycloak
-    command: start-dev --import-realm
+    command: start-dev --import-realm  # Démarre Keycloak en mode dev avec importation du realm
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
-      - "8090:8080"
+      - "8090:8080"  # Expose le port 8080 de Keycloak sur le port 8090 de la machine hôte
     volumes:
-      - ./medilabo-realm.json:/opt/keycloak/data/import/medilabo-realm.json
+      - ./medilabo-realm.json:/opt/keycloak/data/import/medilabo-realm.json  # Importation de la configuration du realm
     networks:
       - medilabo-net
 
-
+  # Service backend pour gérer les patients
   medilabo-patient:
     build:
-      context: ./medilabo-patient
+      context: ./medilabo-patient  # Contexte de build pour le microservice "medilabo-patient"
     ports:
-      - "8081:8081"
+      - "8081:8081"  # Expose le port 8081
     depends_on:
       mysql:
-        condition: service_healthy
+        condition: service_healthy  # Attends que MySQL soit prêt avant de démarrer
     environment:
-      KEYCLOAK_ISSUER_URI: http://host.docker.internal:8090/realms/medilabo
-      DB_URL: jdbc:mysql://mysql:3306/medilabo_patient?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      DB_USERNAME: root
-      DB_PASSWORD: rootroot
+      KEYCLOAK_ISSUER_URI: http://host.docker.internal:8090/realms/medilabo  # URI pour Keycloak
+      DB_URL: jdbc:mysql://mysql:3306/medilabo_patient?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true  # URL de la base de données
+      DB_USERNAME: root  # Identifiants pour la DB
+      DB_PASSWORD: rootroot  # Mot de passe pour la DB
     networks:
-      - medilabo-net
+      - medilabo-net  # Se connecte au même réseau
 
+  # Service backend pour gérer les notes
   medilabo-notes:
     build:
-      context: ./medilabo-notes
+      context: ./medilabo-notes  # Contexte de build pour le microservice "medilabo-notes"
     ports:
-      - "8083:8083"
+      - "8083:8083"  # Expose le port 8083
     depends_on:
-      - mongo
+      - mongo  # Attends que MongoDB soit prêt avant de démarrer
     environment:
-      KEYCLOAK_ISSUER_URI: http://host.docker.internal:8090/realms/medilabo
-      MONGODB_HOST: mongo
-      MONGODB_PORT: 27017
-      MONGODB_DATABASE: notes
+      KEYCLOAK_ISSUER_URI: http://host.docker.internal:8090/realms/medilabo  # URI pour Keycloak
+      MONGODB_HOST: mongo  # Hôte MongoDB
+      MONGODB_PORT: 27017  # Port MongoDB
+      MONGODB_DATABASE: notes  # Nom de la base MongoDB pour les notes
     networks:
-      - medilabo-net
+      - medilabo-net  # Se connecte au même réseau
 
+  # Gateway pour centraliser les appels aux microservices
   medilabo-gateway:
     build:
-      context: ./medilabo-gateway
+      context: ./medilabo-gateway  # Contexte de build pour le microservice "medilabo-gateway"
     ports:
-      - "8080:8080"
+      - "8080:8080"  # Expose le port 8080
     depends_on:
-      - medilabo-patient
-      - medilabo-notes
-      - medilabo-diabetes-assessment
+      - medilabo-patient  # Attends que "medilabo-patient" soit prêt
+      - medilabo-notes  # Attends que "medilabo-notes" soit prêt
+      - medilabo-diabetes-assessment  # Attends que "medilabo-diabetes-assessment" soit prêt
     environment:
-      PATIENT_URL: http://medilabo-patient:8081
-      NOTES_URL: http://medilabo-notes:8083
-      ASSESSMENT_URL: http://medilabo-diabetes-assessment:8084
-      FRONT_URL: http://medilabo-front:8082
+      PATIENT_URL: http://medilabo-patient:8081  # URL du service patient
+      NOTES_URL: http://medilabo-notes:8083  # URL du service notes
+      ASSESSMENT_URL: http://medilabo-diabetes-assessment:8084  # URL du service d'évaluation
+      FRONT_URL: http://medilabo-front:8082  # URL de l'application front
     networks:
-      - medilabo-net
+      - medilabo-net  # Se connecte au même réseau
 
+  # Front-end de l'application, consomme la Gateway
   medilabo-front:
     build:
-      context: ./medilabo-front
+      context: ./medilabo-front  # Contexte de build pour le microservice "medilabo-front"
     ports:
-      - "8082:8082"
+      - "8082:8082"  # Expose le port 8082
     depends_on:
-      - medilabo-gateway
-      - keycloak
+      - medilabo-gateway  # Attends que "medilabo-gateway" soit prêt
+      - keycloak  # Attends que "keycloak" soit prêt
     environment:
-      KEYCLOAK_ISSUER_URI: http://host.docker.internal:8090/realms/medilabo
-      KEYCLOAK_REDIRECT_URI: http://localhost:8082/login/oauth2/code/keycloak
-      PATIENT_API_URL: http://medilabo-gateway:8080/api/patients
-      NOTE_API_URL: http://medilabo-gateway:8080/api/notes
-      ASSESSMENT_API_URL: http://medilabo-gateway:8080/assessment
+      KEYCLOAK_ISSUER_URI: http://host.docker.internal:8090/realms/medilabo  # URI pour Keycloak
+      KEYCLOAK_REDIRECT_URI: http://localhost:8082/login/oauth2/code/keycloak  # URI de redirection après login
+      PATIENT_API_URL: http://medilabo-gateway:8080/api/patients  # URL API pour les patients
+      NOTE_API_URL: http://medilabo-gateway:8080/api/notes  # URL API pour les notes
+      ASSESSMENT_API_URL: http://medilabo-gateway:8080/assessment  # URL API pour l'évaluation
     networks:
-      - medilabo-net
+      - medilabo-net  # Se connecte au même réseau
 
+  # Service pour l'évaluation du risque diabétique
   medilabo-diabetes-assessment:
     build:
-      context: ./medilabo-diabetes-assessment
+      context: ./medilabo-diabetes-assessment  # Contexte de build pour "medilabo-diabetes-assessment"
     ports:
-      - "8084:8084"
+      - "8084:8084"  # Expose le port 8084
     depends_on:
-      - medilabo-patient
-      - medilabo-notes
+      - medilabo-patient  # Attends que "medilabo-patient" soit prêt
+      - medilabo-notes  # Attends que "medilabo-notes" soit prêt
     environment:
-      KEYCLOAK_ISSUER_URI: http://host.docker.internal:8090/realms/medilabo
-      PATIENT_SERVICE_URL: http://medilabo-patient:8081/api/patients
-      NOTE_SERVICE_URL: http://medilabo-notes:8083/api/notes
+      KEYCLOAK_ISSUER_URI: http://host.docker.internal:8090/realms/medilabo  # URI pour Keycloak
+      PATIENT_SERVICE_URL: http://medilabo-patient:8081/api/patients  # URL API du service patient
+      NOTE_SERVICE_URL: http://medilabo-notes:8083/api/notes  # URL API du service notes
     networks:
-      - medilabo-net
+      - medilabo-net  # Se connecte au même réseau
 
+# Déclaration du réseau utilisé par tous les services
 networks:
   medilabo-net:

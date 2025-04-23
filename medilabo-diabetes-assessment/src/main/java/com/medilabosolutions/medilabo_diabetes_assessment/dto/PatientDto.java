@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 
+/**
+ * DTO représentant les informations d'un patient.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,6 +19,5 @@ public class PatientDto {
     private String lastName;
     private LocalDate dateOfBirth;
     private Gender gender;
-
 
 }
